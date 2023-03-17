@@ -45,8 +45,9 @@ class ConfigService {
       type: 'mysql',
       url: this.getValue('DATABASE_URL'),
       synchronize: false,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      migrations: [__dirname + '/migrations/*{.ts,.js}'],
+      entities: ['src/entity/**/*{.js,.ts}'],
+      migrations: ['src/migration/**/*{.js,.ts}'],
+      subscribers: ['src/subscriber/**/*{.js,.ts}'],
       migrationsTableName: 'migrations',
       ssl: false,
       migrationsRun: true,
@@ -60,7 +61,6 @@ class ConfigService {
   getAppConfig = () => ({
     clientHost: this.getValue('CLIENT_HOST'),
     domain: this.getValue('DOMAIN'),
-    anadeaEmail: this.getValue('ANADEA_EMAIL'),
   });
 }
 

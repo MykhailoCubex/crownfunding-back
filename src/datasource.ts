@@ -1,11 +1,10 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
-import config from '../ormconfig.json';
+import { DataSource } from 'typeorm';
+import { configService } from './config.service';
 
-const DBDataSource = new DataSource(config as DataSourceOptions);
+const DBDataSource = new DataSource(configService.getDataSourceConfig());
 
 DBDataSource.initialize()
   .then(() => {
-    console.log(config);
     console.log('Data Source has been initialized!');
   })
   .catch((err) => {
