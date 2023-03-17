@@ -18,9 +18,6 @@ export class UserEntity {
   @Column({ default: 0 })
   amount: number;
 
-  @Column({ default: 0 })
-  total: number;
-
   @ManyToOne(() => CampaignEntity, {
     nullable: true,
     onUpdate: 'CASCADE',
