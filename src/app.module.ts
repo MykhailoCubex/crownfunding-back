@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
-import { CampaignsModule } from './campaigns/campaigns.module';
+import { UsersModule } from './modules/users/users.module';
+import { CampaignsModule } from './modules/campaigns/campaigns.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, CampaignsModule],
+  imports: [UsersModule, CampaignsModule],
   controllers: [],
   providers: [],
 })

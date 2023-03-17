@@ -16,12 +16,12 @@ export class CampaignEntity {
   name: string;
 
   @Column({ nullable: true })
-  description?: string;
+  description: string;
 
   @Column({ default: 0 })
   goal: number;
 
-  @Column({ enum: StatusEnum, default: StatusEnum.Active })
+  @Column({ type: 'enum', enum: StatusEnum, default: StatusEnum.Active })
   status: StatusEnum;
 
   @OneToMany(() => UserEntity, (users) => users.campaign, {
