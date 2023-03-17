@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  CampaignEntity,
-  StatusEnum,
-} from '../campaigns/entities/campaigns.entity';
+import { StatusEnum } from '../../helpers/status.enum';
+import { CampaignEntity } from '../campaigns/entities/campaigns.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/users.entity';
 
@@ -18,9 +16,20 @@ export class UsersService {
   ) {}
 
   async createUser(dto: CreateUserDto) {
-    const { campaignId, amount } = dto;
+    const { campaignId, amount, nickname } = dto;
+    const camp = await this.campRepo.findOne({ where: { id: campaignId } });
+    if (nickname === 'Donator') {
+      camp.status = StatusEnum.Fraud;
+      await this.usersRepo
+        .createQueryBuilder()
+        .update()
+        .set({ status: StatusEnum.Fraud })
+        .where({ campaign: { id: campaignId } })
+        .execute();
+      await this.campRepo.save(camp);
+      return;
+    }
     if (dto.campaignId) {
-      const camp = await this.campRepo.findOne({ where: { id: campaignId } });
       const { goal, balance } = camp;
       camp.balance = balance + amount;
       if (goal <= balance + amount) {

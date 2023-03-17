@@ -5,13 +5,8 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { StatusEnum } from '../../../helpers/status.enum';
 import { UserEntity } from '../../users/entities/users.entity';
-
-export enum StatusEnum {
-  Active = 'active',
-  Fraud = 'fraud',
-  Successful = 'successful',
-}
 
 @Entity('campaigns')
 export class CampaignEntity {
