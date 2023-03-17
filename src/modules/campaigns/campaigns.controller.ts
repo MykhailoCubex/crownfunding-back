@@ -1,8 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CampaignsService } from './campaigns.service';
 import { CreateCampaignDto } from './dto/create-campaigns.dto';
-import { CampaignEntity } from './entities/campaigns.entity';
 
 @Controller('campaigns')
 export class CampaignsController {
@@ -11,5 +9,15 @@ export class CampaignsController {
   @Post('')
   createCamp(@Body() dto: CreateCampaignDto) {
     return this.campaignsService.createCamp(dto);
+  }
+
+  @Get('all')
+  getAllCamps() {
+    return this.campaignsService.getAllCamps();
+  }
+
+  @Get(':id')
+  getCampById(@Param('id') id: string) {
+    return this.campaignsService.getCampById(id);
   }
 }

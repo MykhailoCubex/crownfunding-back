@@ -14,4 +14,12 @@ export class CampaignsService {
   async createCamp(dto: CreateCampaignDto) {
     return await this.campsRepository.save(dto);
   }
+
+  async getAllCamps() {
+    return await this.campsRepository.find();
+  }
+
+  async getCampById(id: string) {
+    return await this.campsRepository.findOne({ where: { id } });
+  }
 }

@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -7,6 +7,6 @@ export class CreateUserDto {
   @IsNumber()
   amount: number;
 
-  @IsString()
+  @IsUUID()
   campaignId: string;
 }

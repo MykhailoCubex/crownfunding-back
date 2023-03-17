@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString, IsOptional } from 'class-validator';
 import { StatusEnum } from '../entities/campaigns.entity';
 
 export class CreateCampaignDto {
@@ -6,11 +6,13 @@ export class CreateCampaignDto {
   name: string;
 
   @IsString()
+  @IsOptional()
   description: string;
 
   @IsNumber()
   goal: number;
 
   @IsEnum(StatusEnum)
+  @IsOptional()
   status: StatusEnum;
 }
