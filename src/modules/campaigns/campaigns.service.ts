@@ -20,6 +20,11 @@ export class CampaignsService {
   }
 
   async getCampById(id: string) {
-    return await this.campsRepository.findOne({ where: { id } });
+    return await this.campsRepository.findOne({
+      where: { id },
+      relations: {
+        users: true,
+      },
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StatusEnum } from '../../helpers/status.enum';
@@ -16,30 +16,34 @@ export class UsersService {
   ) {}
 
   async createUser(dto: CreateUserDto) {
-    const { campaignId, amount, nickname } = dto;
-    const camp = await this.campRepo.findOne({ where: { id: campaignId } });
-    if (nickname === 'Donator') {
-      camp.status = StatusEnum.Fraud;
-      await this.usersRepo
-        .createQueryBuilder()
-        .update()
-        .set({ status: StatusEnum.Fraud })
-        .where({ campaign: { id: campaignId } })
-        .execute();
-      await this.campRepo.save(camp);
-      return;
-    }
-    if (dto.campaignId) {
-      const { goal, balance } = camp;
-      camp.balance = balance + amount;
-      if (goal <= balance + amount) {
-        camp.status = StatusEnum.Successful;
+    try {
+      const { campaignId, amount, nickname } = dto;
+      const camp = await this.campRepo.findOne({ where: { id: campaignId } });
+      if (nickname === 'Donator') {
+        camp.status = StatusEnum.Fraud;
+        await this.usersRepo
+          .createQueryBuilder()
+          .update()
+          .set({ status: StatusEnum.Fraud })
+          .where({ campaign: { id: campaignId } })
+          .execute();
+        await this.campRepo.save(camp);
+        return;
       }
-      await this.campRepo.save(camp);
+      if (dto.campaignId) {
+        const { goal, balance } = camp;
+        camp.balance = balance + amount;
+        if (goal <= balance + amount) {
+          camp.status = StatusEnum.Successful;
+        }
+        await this.campRepo.save(camp);
 
-      // @ts-ignore
-      dto.campaign = camp;
+        // @ts-ignore
+        dto.campaign = camp;
+      }
+      return await this.usersRepo.save(dto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
-    return await this.usersRepo.save(dto);
   }
 }
