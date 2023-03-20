@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
+import { StatusEnum } from '../../../helpers/status.enum';
 import { CampaignEntity } from '../../campaigns/entities/campaigns.entity';
 
 @Entity('users')
@@ -18,8 +19,8 @@ export class UserEntity {
   @Column({ default: 0 })
   amount: number;
 
-  @Column({ default: 0 })
-  total: number;
+  @Column({ type: 'enum', enum: StatusEnum, default: StatusEnum.Active })
+  status: StatusEnum;
 
   @ManyToOne(() => CampaignEntity, {
     nullable: true,

@@ -43,11 +43,13 @@ class ConfigService {
   getDataSourceConfig() {
     const options: DataSourceOptions = {
       type: 'mysql',
-      url: this.getValue('DATABASE_URL'),
+      port: this.env['MYSQL_PORT'] ? parseInt(this.env['MYSQL_PORT']) : 3306,
+      username: this.getValue('MYSQL_USER'),
+      database: this.getValue('MYSQL_DB'),
+      password: this.getValue('MYSQL_PASSWORD'),
       synchronize: false,
-      entities: ['src/entity/**/*{.js,.ts}'],
-      migrations: ['src/migration/**/*{.js,.ts}'],
-      subscribers: ['src/subscriber/**/*{.js,.ts}'],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      migrations: [__dirname + '/migrations/*{.ts,.js}'],
       migrationsTableName: 'migrations',
       ssl: false,
       migrationsRun: true,

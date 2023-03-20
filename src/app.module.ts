@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
+import { UsersModule } from './modules/users/users.module';
+import { CampaignsModule } from './modules/campaigns/campaigns.module';
+import { configService } from './config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
-import { CampaignsModule } from './campaigns/campaigns.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, CampaignsModule],
+  imports: [
+    TypeOrmModule.forRoot(configService.getDataSourceConfig()),
+    UsersModule,
+    CampaignsModule,
+  ],
   controllers: [],
   providers: [],
 })
